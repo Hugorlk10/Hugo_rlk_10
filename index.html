@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Usuários</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        input {
+            margin: 10px 0;
+            padding: 10px;
+            width: calc(100% - 22px);
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cadastro de Usuários</h1>
+    <input type="text" id="nome" placeholder="Nome" required>
+    <input type="email" id="email" placeholder="Email" required>
+    <button onclick="cadastrarUsuario()">Cadastrar Usuário</button>
+    <button onclick="mostrarUsuarios()">Mostrar Usuários</button>
+
+    <script>
+        let usuarios = [];
+
+        function cadastrarUsuario() {
+            const nome = document.getElementById("nome").value;
+            const email = document.getElementById("email").value;
+
+            if (nome && email) {
+                usuarios.push({ nome, email });
+                alert("Usuário cadastrado com sucesso!");
+                mostrarUsuarios();
+                limparCampos();
+            } else {
+                alert("Por favor, preencha todos os campos.");
+            }
+        }
+
+        function mostrarUsuarios() {
+            if (usuarios.length === 0) {
+                alert("Nenhum usuário cadastrado.");
+                return;
+            }
+            let mensagem = "Usuários cadastrados:\n";
+            usuarios.forEach((usuario, index) => {
+                mensagem += `${index + 1}. Nome: ${usuario.nome}, Email: ${usuario.email}\n`;
+            });
+            alert(mensagem);
+        }
+
+        function editarUsuario(index) {
+            const nome = prompt("Novo Nome:", usuarios[index].nome);
+            const email = prompt("Novo Email:", usuarios[index].email);
+
+            if (nome && email) {
+                usuarios[index] = { nome, email };
+                alert("Usuário editado com sucesso!");
+                mostrarUsuarios();
+            } else {
+                alert("Edição cancelada ou campos vazios.");
+            }
+        }
+
+        // Adicionando um listener para permitir a edição
+        document.addEventListener('click', (event) => {
+            if (event.target.tagName === 'BUTTON' && event.target.textContent.includes('Mostrar')) {
+                const index = prompt("Digite o número do usuário que deseja editar:");
+                if (index > 0 && index <= usuarios.length) {
+                    editarUsuario(index - 1);
+                } else {
+                    alert("Número inválido.");
+                }
+            }
+        });
+
+        function limparCampos() {
+            document.getElementById("nome").value = "";
+            document.getElementById("email").value = "";
+        }
+    </script>
+</body>
+</html>
